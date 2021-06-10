@@ -18,7 +18,7 @@ data "aws_ami" "ubuntu18_back" {
 resource "aws_key_pair" "joaopmjm_ssh_back" {
 	provider   = aws.region_back
 	key_name   = "joaopmjm_ssh_back"
-	public_key = file("C:/Users/arfom/.ssh/id_rsa.pub")
+	public_key = file("$HOME/.ssh/id_rsa.pub")
 }
 
 resource "aws_instance" "backend-instance" {
