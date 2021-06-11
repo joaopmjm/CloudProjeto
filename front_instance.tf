@@ -4,7 +4,7 @@ data "aws_ami" "ubuntu18_front" {
 
 	filter {
 		name   = "name"
-		values = ["ubuntu/images/hvm-ssd/ubuntu-bionic-18.04-amd64-server-*"]
+		values = ["ubuntu-*"]
 	}
 
 	filter {
@@ -18,7 +18,7 @@ data "aws_ami" "ubuntu18_front" {
 resource "aws_key_pair" "joaopmjm_ssh_front" {
 	provider   = aws.region_front
 	key_name   = "joaopmjm_ssh_front"
-	public_key = file("C:/Users/joaopmjm/.ssh/id_rsa.pub")
+	public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCe0lEbqZzzu0+SkNBRub6233zVDR1pCNwphl4YQ/A+AKxbKD84lLKKT3dDQVSm1gKjwSZdStwhJqDVEslo7OFnk8HuES7pdQNd3DPe9O29RVl0bBvAhYdGIo7/B08vQyUnNuYA+dyZEwJIAbVj5SI1/84rBEyKShVEqb6/WG6gZq2ruvgXaeuGqHzVuLZBYf4Uu6GC3CPYff3ZYRQbN7/5kXnePaC9yxr8A+/VCi2fqYs9sd/wClCUursdfF3rooOy8+A7rapxMP7D2Tap1l/TkgDOTpiUKwwH7WPIVguBS7dL5f9zI6vb98/ctrLgSHyjmHU2PKa3GuuUUj7rIECp joao@G7-joao"
 }
 
 data "template_file" "front_script_data" {
@@ -34,7 +34,7 @@ resource "aws_launch_configuration" "front_lc" {
 	name_prefix     = "frontend-lc-"
 	image_id        = data.aws_ami.ubuntu18_front.id
 	instance_type   = "t2.micro"
-	security_groups = [module.frontend_sg.this_security_group_id]
+	security_groups = [module.frontend_sg.security_group_id]
 	key_name        = "joaopmjm_ssh_front"
 
 	user_data = data.template_file.front_script_data.rendered
@@ -42,105 +42,6 @@ resource "aws_launch_configuration" "front_lc" {
 	lifecycle {
 		create_before_destroy = true
 	}
-}
-
-module "front_asg" {
-	source = "terraform-aws-modules/autoscaling/aws"
-	providers = {
-		aws = aws.region_front
-	}
-	depends_on = [module.frontend_sg, module.frontend_elb, data.aws_ami.ubuntu18_front]
-
-	name = "frontend-asg"
-
-	launch_configuration         = aws_launch_configuration.front_lc.name
-	create_lc                    = false
-	recreate_asg_when_lc_changes = true
-
-	security_groups = [module.frontend_sg.this_security_group_id]
-	load_balancers  = [module.frontend_elb.this_elb_id]
-
-
-	asg_name                  = "front-asg"
-	vpc_zone_identifier       = ["subnet-b9e8dfd1", "subnet-c1cd198d", "subnet-e7e4899d"]
-	health_check_type         = "EC2"
-	min_size                  = 1
-	max_size                  = 3
-	desired_capacity          = null
-	wait_for_capacity_timeout = 0
-
-	tags = [
-		{
-		key                 = "Owner"
-		value               = "joaopmjm"
-		propagate_at_launch = true
-		},
-		{
-		key                 = "Name"
-		value               = "front-asg-component"
-		propagate_at_launch = true
-		},
-	]
-}
-
-resource "aws_autoscaling_policy" "new_instance" {
-  provider               = aws.region_front
-  depends_on             = [module.front_asg]
-  name                   = "new_instance"
-  scaling_adjustment     = 1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 120
-  autoscaling_group_name = module.front_asg.this_autoscaling_group_name
-}
-
-resource "aws_cloudwatch_metric_alarm" "webserver_cpu_alarm_up" {
-  provider            = aws.region_front
-  depends_on          = [module.front_asg, aws_autoscaling_policy.new_instance]
-  alarm_name          = "webserver_cpu_alarm_up"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "120"
-  statistic           = "Average"
-  threshold           = "50"
-
-  dimensions = {
-    AutoScalingGroupName = module.front_asg.this_autoscaling_group_name
-  }
-
-  alarm_description = "This metric monitor EC2 instance CPU utilization"
-  alarm_actions     = [aws_autoscaling_policy.new_instance.arn]
-}
-
-resource "aws_autoscaling_policy" "kill_instance" {
-  provider               = aws.region_front
-  depends_on             = [module.front_asg]
-  name                   = "kill_instance"
-  scaling_adjustment     = -1
-  adjustment_type        = "ChangeInCapacity"
-  cooldown               = 120
-  autoscaling_group_name = module.front_asg.this_autoscaling_group_name
-}
-
-resource "aws_cloudwatch_metric_alarm" "webserver_cpu_alarm_down" {
-  provider            = aws.region_front
-  depends_on          = [module.front_asg, aws_autoscaling_policy.kill_instance]
-  alarm_name          = "webserver_cpu_alarm_down"
-  comparison_operator = "LessThanOrEqualToThreshold"
-  evaluation_periods  = "2"
-  metric_name         = "CPUUtilization"
-  namespace           = "AWS/EC2"
-  period              = "120"
-  statistic           = "Average"
-  threshold           = "10"
-
-  dimensions = {
-    AutoScalingGroupName = module.front_asg.this_autoscaling_group_name
-  }
-
-  alarm_description = "This metric monitor EC2 instance CPU utilization"
-  alarm_actions     = [aws_autoscaling_policy.kill_instance.arn]
 }
 
 module "frontend_elb" {
@@ -152,8 +53,8 @@ module "frontend_elb" {
 
   name = "front-elb"
 
-  subnets         = ["subnet-b9e8dfd1", "subnet-c1cd198d", "subnet-e7e4899d"]
-  security_groups = [module.frontend_sg.this_security_group_id]
+  subnets         = ["subnet-4d2f5a42", "subnet-13fa4b4f", "subnet-7ebe0d50"]
+  security_groups = [module.frontend_sg.security_group_id]
   internal        = false
 
   listener = [
@@ -180,5 +81,5 @@ module "frontend_elb" {
 }
 
 output "webserver_elb_dns_name" {
-  value = module.frontend_elb.this_elb_dns_name
+  value = module.frontend_elb.elb_dns_name
 }

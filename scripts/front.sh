@@ -12,8 +12,8 @@ cd CloudProjeto/front
 
 
 crontab <<EOF
-@reboot sudo docker run -d -p 80:5000 --name=run-siteza-da-massa siteza-da-massa
+@reboot sudo docker run -d -p 80:5000 --name=frontProjeto frontProjeto
 EOF
 
-sudo docker build -t siteza-da-massa --build-arg API_URL="http://${IP_DO_BACK}" .
-sudo docker run -d -p 80:5000 --name=run-siteza-da-massa siteza-da-massa
+sudo docker build -t frontProjeto --build-arg API_URL="http://${IP_DO_BACK}" .
+sudo docker run -d -p 80:5000 --name=run-frontProjeto frontProjeto
