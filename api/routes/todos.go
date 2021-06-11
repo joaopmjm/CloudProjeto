@@ -7,7 +7,6 @@ import (
 	"gorm.io/gorm"
 )
 
-// GetTodos : get a list of all todos
 func GetTodos(c *fiber.Ctx) error {
 	var db *gorm.DB = database.DBConn
 	var todos []models.Todo
@@ -19,7 +18,6 @@ func GetTodos(c *fiber.Ctx) error {
 	})
 }
 
-// GetTodo : get a specific todo
 func GetTodo(c *fiber.Ctx) error {
 	var db *gorm.DB = database.DBConn
 	var id string = c.Params("id")
@@ -35,7 +33,6 @@ func GetTodo(c *fiber.Ctx) error {
 	return c.JSON(todo)
 }
 
-// NewTodo : create a new todo
 func NewTodo(c *fiber.Ctx) error {
 	var db *gorm.DB = database.DBConn
 	var newTodo *models.NewTodo = new(models.NewTodo)
@@ -61,7 +58,6 @@ func NewTodo(c *fiber.Ctx) error {
 	})
 }
 
-// DeleteTodo : delete a specific todo
 func DeleteTodo(c *fiber.Ctx) error {
 	var db *gorm.DB = database.DBConn
 	var id string = c.Params("id")
@@ -79,7 +75,6 @@ func DeleteTodo(c *fiber.Ctx) error {
 	})
 }
 
-// UpdateTodo : update a specific todo
 func UpdateTodo(c *fiber.Ctx) error {
 	var db *gorm.DB = database.DBConn
 
