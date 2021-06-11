@@ -1,5 +1,9 @@
 secret.tf
-terraform.lock.hcl
+
+.terraform.lock.hcl
+
 terraform.tfstate
+
 terraform.tfstate.backup
+
 .terraform
