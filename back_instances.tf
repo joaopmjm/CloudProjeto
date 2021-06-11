@@ -28,7 +28,7 @@ resource "aws_instance" "backend-instance" {
 	ami                    = data.aws_ami.ubuntu18_back.id
 	instance_type          = "t2.micro"
 	subnet_id              = "subnet-51976d6f"
-	private_ip             = "172.31.48.1"
+	private_ip             = "172.31.48.30"
 	key_name               = "joaopmjm_ssh_back"
 	user_data = file("./scripts/back.sh")
 	tags = {
@@ -45,7 +45,7 @@ resource "aws_instance" "backend-instance-db" {
 	instance_type          = "t2.micro"
 	key_name               = "joaopmjm_ssh_back"
 	subnet_id              = "subnet-51976d6f"
-	private_ip             = "172.31.48.2"
+	private_ip             = "172.31.48.40"
 
 	user_data = file("./scripts/docker_db.sh")
 	tags = {

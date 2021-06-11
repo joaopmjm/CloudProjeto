@@ -24,7 +24,7 @@ resource "aws_key_pair" "joaopmjm_ssh_front" {
 data "template_file" "front_script_data" {
 	template = file("./scripts/front.sh")
 	vars = {
-		IP_DO_BACK = aws_instance.backend-instance.public_ip
+		back_ip = aws_instance.backend-instance.public_ip
 	}
 }
 resource "aws_launch_configuration" "front_lc" {
