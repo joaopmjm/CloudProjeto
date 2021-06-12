@@ -43,7 +43,7 @@ CREATE TABLE todos (
 COMMIT;
 EOF
 cd ..
-
+""
 crontab <<EOF
 @reboot sudo docker run -d -p 80:3306 --name=db_user \
     -e MYSQL_ROOT_PASSWORD="123456789" \
@@ -51,7 +51,4 @@ crontab <<EOF
     mysql:latest
 EOF
 
-sudo docker run -d -p 80:3306 --name=db_user \
-    -e MYSQL_ROOT_PASSWORD="123456789" \
-    -v /home/ubuntu/database/scripts:/docker-entrypoint-initdb.d \
-    mysql:latest
+sudo docker run -d -p 80:3306 --name=db_user -e MYSQL_ROOT_PASSWORD="123456789" -v /home/ubuntu/database/scripts:/docker-entrypoint-initdb.d mysql:latest
