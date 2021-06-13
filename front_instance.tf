@@ -28,7 +28,7 @@ resource "aws_instance" "frontend-instance" {
 	ami                    = data.aws_ami.ubuntu18_back.id
 	instance_type          = "t2.micro"
 	subnet_id              = "subnet-51976d6f"
-	private_ip             = "172.31.48.40"
+	private_ip             = "172.31.48.50"
 	key_name               = "joaopmjm_ssh_back"
 	user_data = file("./scripts/front.sh")
 	tags = {
