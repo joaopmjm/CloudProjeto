@@ -36,22 +36,3 @@ resource "aws_instance" "backend-instance" {
 		Name  = "backend-instance"
 	}
 }
-
-resource "aws_instance" "backend-instance-db" {
-	provider               = aws.region_back
-	depends_on             = [module.backend_sg_db]
-	vpc_security_group_ids = [module.backend_sg_db.security_group_id]
-	ami                    = data.aws_ami.ubuntu18_back.id
-	instance_type          = "t2.micro"
-	key_name               = "joaopmjm_ssh_back"
-	subnet_id              = "subnet-51976d6f"
-	private_ip             = "172.31.48.40"
-
-	user_data = file("./scripts/docker_db.sh")
-	tags = {
-		Owner = "joaopmjm"
-		Name  = "backend-db"
-	}
-}
-
-
