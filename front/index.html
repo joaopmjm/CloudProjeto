@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRUD Application using JavaScript</title>
+    <style>
+        table 
+        {
+            width: 100%;
+        }
+        table, th, td 
+        {
+            border: solid 1px #DDD;
+            border-collapse: collapse;
+            padding: 2px 3px;
+            text-align: center;
+        }
+      
+        input[type='button'] 
+        {
+            cursor: pointer;
+            border: none;
+            color: #FFF;
+        }
+        
+        input[type='text'], select 
+        {
+            text-align: center;
+            border: solid 1px #CCC;
+            width: auto;
+            padding: 2px 3px;
+        }
+    </style>
+</head>
+<body>
+    <!--Show the app here.-->
+    <h1>Projeto Cloud</h1>
+    <div id="container" style="width:700px;"></div>
+    <form action="" id="myForm">
+        <label for="fname">Id:</label><br>
+        <input type="text" id="id" name="id" value=""><br>
+        <label for="fname">Titulo:</label><br>
+        <input type="text" id="titulo" name="titulo" value=""><br>
+        <label for="lname">Description:</label><br>
+        <input type="text" id="descrição" name="descrição" value=""><br><br>
+        <input type="button" value="Submit", onclick="validateForm()">
+      </form> 
+</body>
+<script>
+    async function validateForm() {
+        var data = {
+            "Title":document.forms["myForm"]["titulo"].value,
+            "Description":document.forms["myForm"]["descrição"].value
+        }
+        const response =await fetch("http://107.23.163.109/todos/"+document.forms["myForm"]["id"].value, {
+            method: 'POST',
+            mode: 'cors',
+            cache: 'no-cache',
+            credentials: 'same-origin',
+            headers: {
+            'Content-Type': 'application/json'
+            // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data)
+        });
+        fetchBrabo();
+    } 
+    async function fetchBrabo() {
+        const response =await fetch("http://107.23.163.109/todos", {
+        method: 'GET',
+        mode: 'cors',
+        cache: 'no-cache',
+        credentials: 'same-origin',
+        });
+        response.text().then(function(text){
+            print(text);
+            var t = document.createTextNode(text);
+             document.body.appendChild(t);
+        });
+    }
+    fetchBrabo();
+    //http://172.31.48.30/todos
+</script>
+</html>
