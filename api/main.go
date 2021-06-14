@@ -6,8 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/henryrocha/nollo/database"
-	"github.com/henryrocha/nollo/routes"
+	"./db"
+	"./routes"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
