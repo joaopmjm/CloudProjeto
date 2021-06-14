@@ -1,8 +1,10 @@
 package db
 
-import "gorm.io/gorm"
+import (
+    "database/sql"
+)
 
 var (
 	// DBConn : Variable to hold database connection.
-	DBConn *gorm.DB
+	DB *sql.DB
 )

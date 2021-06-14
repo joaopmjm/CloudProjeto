@@ -2,13 +2,13 @@ package routes
 
 import (
 	"github.com/gofiber/fiber"
-	"../api/db"
-	"../api/routes"
-	"gorm.io/gorm"
+	"api/db"
+	"api/models"
+	"database/sql"
 )
 
 func GetTodos(c *fiber.Ctx) error {
-	var db *gorm.DB = database.DBConn
+	var db *gorm.DB = database.DB
 	var todos []models.Todo
 
 	db.Find(&todos)
@@ -19,7 +19,7 @@ func GetTodos(c *fiber.Ctx) error {
 }
 
 func GetTodo(c *fiber.Ctx) error {
-	var db *gorm.DB = database.DBConn
+	var db *gorm.DB = database.DB
 	var id string = c.Params("id")
 	var todo models.Todo
 
@@ -34,7 +34,7 @@ func GetTodo(c *fiber.Ctx) error {
 }
 
 func NewTodo(c *fiber.Ctx) error {
-	var db *gorm.DB = database.DBConn
+	var db *gorm.DB = database.DB
 	var newTodo *models.NewTodo = new(models.NewTodo)
 	var err error
 
@@ -59,7 +59,7 @@ func NewTodo(c *fiber.Ctx) error {
 }
 
 func DeleteTodo(c *fiber.Ctx) error {
-	var db *gorm.DB = database.DBConn
+	var db *gorm.DB = database.DB
 	var id string = c.Params("id")
 	var todo models.Todo
 
@@ -76,7 +76,7 @@ func DeleteTodo(c *fiber.Ctx) error {
 }
 
 func UpdateTodo(c *fiber.Ctx) error {
-	var db *gorm.DB = database.DBConn
+	var db *gorm.DB = database.DB
 
 	var todo *models.Todo = new(models.Todo)
 	var newTodo *models.NewTodo = new(models.NewTodo)
