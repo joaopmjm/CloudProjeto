@@ -51,14 +51,11 @@
             "Title":document.forms["myForm"]["titulo"].value,
             "Description":document.forms["myForm"]["descrição"].value
         }
-        const response =await fetch("http://107.23.163.109/todos/"+document.forms["myForm"]["id"].value, {
+        const response = await fetch("http://107.23.163.109/todos/"+document.forms["myForm"]["id"].value, {
             method: 'POST',
-            mode: 'cors',
-            cache: 'no-cache',
-            credentials: 'same-origin',
             headers: {
-            'Content-Type': 'application/json'
-            // 'Content-Type': 'application/x-www-form-urlencoded',
+            'Content-Type': 'application/json',
+            // 'Access-Control-Allow-Origin' : "*"
             },
             body: JSON.stringify(data)
         });
@@ -70,6 +67,9 @@
         mode: 'cors',
         cache: 'no-cache',
         credentials: 'same-origin',
+        // headers: {
+        //     'Access-Control-Allow-Origin' : '*'
+        //     },
         });
         response.text().then(function(text){
             print(text);
