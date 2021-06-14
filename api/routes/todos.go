@@ -1,9 +1,9 @@
 package routes
 
 import (
-	"github.com/gofiber/fiber/v2"
-	"api/db"
-	"api/routes"
+	"github.com/gofiber/fiber"
+	"../api/db"
+	"../api/routes"
 	"gorm.io/gorm"
 )
 
