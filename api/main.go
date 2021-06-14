@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"os"
-	"github.com/gofiber/fiber/v2"
-	"github.com/gofiber/fiber/v2/middleware/cors"
-	"github.com/gofiber/fiber/v2/middleware/logger"
+	"github.com/gofiber/fiber"
+	"github.com/gofiber/fiber/middleware/cors"
+	"github.com/gofiber/fiber/middleware/logger"
 	"./api/db"
 	"./api/routes"
 	"gorm.io/driver/mysql"
