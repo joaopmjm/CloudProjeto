@@ -1,47 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"os"
-	"github.com/gofiber/fiber"
-	"github.com/gofiber/fiber/middleware/cors"
-	"github.com/gofiber/fiber/middleware/logger"
-	"./db"
-	"./routes"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
+    "fmt"
+    "log"
+    "net/http"
 )
 
-func initDatabaseConnection() {
-	var dsn string = os.Getenv("DB_DSN")
-	var err error
-
-	database.DBConn, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
-	if err != nil {
-		panic("Failed to connect database.")
-	}
-
-	fmt.Println("Successfully connected to database.")
-	return
+func homePage(w http.ResponseWriter, r *http.Request){
+    fmt.Fprintf(w, "Welcome to the HomePage!")
+    fmt.Println("Endpoint Hit: homePage")
 }
 
-func setupRoutes(app *fiber.App) {
-	// Health check endpoint.
-	app.Get("/api/v1/ping", routes.Ping)
-
-	// Todos endpoints.
-	app.Get("/api/v1/todos", routes.GetTodos)
-	app.Get("/api/v1/todos/:id", routes.GetTodo)
-	app.Post("/api/v1/todos", routes.NewTodo)
-	app.Delete("/api/v1/todos/:id", routes.DeleteTodo)
-	app.Patch("/api/v1/todos", routes.UpdateTodo)
+func handleRequests() {
+    http.HandleFunc("/", homePage)
+    log.Fatal(http.ListenAndServe(":10000", nil))
 }
 
 func main() {
-	app := fiber.New()
-	app.Use(cors.New())
-	app.Use(logger.New())
-	initDatabaseConnection()
-	setupRoutes(app)
-	app.Listen(":8001")
+    handleRequests()
 }

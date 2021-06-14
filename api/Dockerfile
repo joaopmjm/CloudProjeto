@@ -2,9 +2,7 @@ FROM golang:1.14
 
 WORKDIR /go/src/app
 COPY . .
-RUN go get -u github.com/gofiber/fiber
-RUN go get -d ./...
-RUN go install ./...
+RUN go get -u github.com/gofiber/fiber && go get -d ./... && go install ./...
 
 EXPOSE 8001
 
