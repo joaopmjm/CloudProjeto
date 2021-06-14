@@ -15,6 +15,6 @@ crontab <<EOF
 
 EOF
 
-sudo docker build -t api_db .
+sudo docker build -t api .
 
-sudo docker run --rm -d -p 80:8001 -e --name joaopmjm api_db
+sudo docker run --rm -d -p 80:8001 -e --name api api
