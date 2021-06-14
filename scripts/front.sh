@@ -16,4 +16,4 @@ crontab <<EOF
 EOF
 
 sudo docker build -t front .
-sudo docker run -d -p 80:5000 --name=run-front front
+sudo docker run -d -p 8080:80 --name=run-front front

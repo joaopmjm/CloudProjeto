@@ -1,7 +1,9 @@
-FROM html
-
+FROM nginx:alpine
+COPY . /usr/share/nginx/html
 WORKDIR /go/src/
 
 ADD . ~/CloudProjeto/front/index.html
 COPY . .
-EXPOSE 5000
+EXPOSE 80
+
+CMD [ "site" ]
