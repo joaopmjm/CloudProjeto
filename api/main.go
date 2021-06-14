@@ -6,9 +6,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
-	"github.com/joaopmjm/CloudProjeto/blob/main/api/db/db"
-	"github.com/joaopmjm/CloudProjeto/blob/main/api/routes/ping"
-	"github.com/joaopmjm/CloudProjeto/blob/main/api/routes/todos"
+	"api/db"
+	"api/routes"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

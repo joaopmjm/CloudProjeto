@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/joaopmjm/CloudProjeto/blob/main/api/db/db"
-	"github.com/joaopmjm/CloudProjeto/blob/main/api/models/TODOS"
+	"api/db"
+	"api/routes"
 	"gorm.io/gorm"
 )
 
