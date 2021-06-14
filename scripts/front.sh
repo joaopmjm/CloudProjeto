@@ -15,5 +15,5 @@ crontab <<EOF
 @reboot sudo docker run -d -p 80:5000 --name=frontProjeto frontProjeto
 EOF
 
-sudo docker build -t frontProjeto --build-arg API_URL="http://172.31.48.40" .
-sudo docker run -d -p 80:5000 --name=run-frontProjeto frontProjeto
+sudo docker build -t front --build-arg API_URL="http://172.31.48.40" .
+sudo docker run -d -p 80:5000 --name=run-front front
