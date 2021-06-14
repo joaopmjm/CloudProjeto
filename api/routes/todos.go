@@ -2,8 +2,8 @@ package routes
 
 import (
 	"github.com/gofiber/fiber"
-	"api/db"
-	"api/models"
+	"../db"
+	"../models"
 	"database/sql"
 )
 
